@@ -1,8 +1,9 @@
 import { TCar, TCreateCarsBodySchema, TUpdateCarsBodySchema } from "../schemas/cars.schemas";
 import { prisma } from "../database/prisma";
 import { AppError } from "../errors/appError";
+import { injectable } from "tsyringe";
 
-
+@injectable()
 export class CarsServices {
 
     public createCar = async ( body: TCreateCarsBodySchema ): Promise<TCar> => {

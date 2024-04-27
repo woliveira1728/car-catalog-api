@@ -22,6 +22,8 @@
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
     "helmet": "^7.1.0",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.8.0",
     "zod": "^3.23.4"
   },
   "devDependencies": {

@@ -1,21 +1,26 @@
 import "reflect-metadata";
-import { CarsServices } from "../../services/cars.services";
-import { carsCreateBodyListMock } from "../__mocks__/cars.mocks";
+import { CarsServices, UsersServices } from "../../services/";
+import { carsCreateBodyListMock, createUser1Mock } from "../__mocks__/";
 
 const carsService = new CarsServices;
+const userServices = new UsersServices;
 
 describe("Unit test: delete car", () => {
     
     test("Should be able to delete car successfully", async () => {
 
-        await carsService.createCar(carsCreateBodyListMock[0]);
-        await carsService.createCar(carsCreateBodyListMock[1]);
+        const user = await userServices.register(createUser1Mock);
 
-        const carsList = await carsService.getManyCars();
+        await carsService.createCar(carsCreateBodyListMock[0], user.id);
+        await carsService.createCar(carsCreateBodyListMock[1], user.id);
 
-        await carsService.deleteCars(carsList[1].id);
+        const carsList1 = await carsService.getManyCars(user.id);
+        
+        await carsService.deleteCars(carsList1[1].id, user.id);
+        
+        const carsList2 = await carsService.getManyCars(user.id);
 
-        expect(carsList.length).toBe(2);
+        expect(carsList2.length).toBe(1);
 
     });
 

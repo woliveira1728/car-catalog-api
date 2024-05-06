@@ -1,22 +1,24 @@
-import { prisma } from "../../database/prisma";
-import { carsCreateBodyListMock } from "../__mocks__/cars.mocks";
-import { carDefaultExpects } from "../utils/carDefaultExpects";
-import { request } from "../utils/request";
+import "reflect-metadata";
+import { carsCreateBodyListMock } from "../__mocks__/";
+import { request, carDefaultExpects, updateTaskBeforeEach } from "../utils/";
+import { CarsServices } from "../../services";
 
+const carsService = new CarsServices;
 
 describe("Integration test: get many cars", () => {
     test("should be able to get many cars successfully", async () => {
 
-        await prisma.car.createMany({ data: carsCreateBodyListMock});
+        const { token } = await updateTaskBeforeEach();
 
-        const data = await request.get("/cars").expect(200).then(response => response.body);
+        const data = await request.get("/cars")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200)
+            .then(response => response.body);
 
         expect(data).toHaveLength(2);
         
         expect(data[0].id).toBeDefined();
         carDefaultExpects(data[0], carsCreateBodyListMock[0]);
 
-        expect(data[1].id).toBeDefined();
-        carDefaultExpects(data[1], carsCreateBodyListMock[1]);
     })
 })

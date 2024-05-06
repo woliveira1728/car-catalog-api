@@ -1,4 +1,4 @@
-import { TCar, TCreateCarsBodySchema, TUpdateCarsBodySchema } from "../schemas/cars.schemas";
+import { TCar, TCreateCarsBodySchema, TUpdateCarsBodySchema } from "../schemas";
 import { prisma } from "../database/prisma";
 import { AppError } from "../errors/appError";
 import { injectable } from "tsyringe";
@@ -6,17 +6,17 @@ import { injectable } from "tsyringe";
 @injectable()
 export class CarsServices {
 
-    public createCar = async ( body: TCreateCarsBodySchema ): Promise<TCar> => {
+    public createCar = async ( body: TCreateCarsBodySchema, userId: string ): Promise<TCar> => {
 
-        const data = await prisma.car.create({ data: body });
+        const data = await prisma.car.create({ data: { ...body, userId } });
 
         return data;
 
     }
 
-    public getManyCars = async (): Promise<TCar[]> => {
+    public getManyCars = async (userId: string): Promise<TCar[]> => {
 
-        const data = await prisma.car.findMany();
+        const data = await prisma.car.findMany({ where: { userId }});
 
         return data;
 
@@ -34,12 +34,16 @@ export class CarsServices {
 
     }
 
-    public updateCars = async (id: string, body: TUpdateCarsBodySchema): Promise<TCar> => {
+    public updateCars = async (id: string, body: TUpdateCarsBodySchema, userId: string): Promise<TCar> => {
 
         const isCarValid = await prisma.car.findFirst({ where: { id } });
 
         if (!isCarValid) {
             throw new AppError(404, "Car not found.");
+        }
+
+        if(isCarValid.userId != userId) {
+            throw new AppError(403, "User must be the car owner");
         }
 
         const data = await prisma.car.update({ where: { id }, data: body });
@@ -48,12 +52,16 @@ export class CarsServices {
 
     }
 
-    public deleteCars = async (id: string): Promise<void> => {
+    public deleteCars = async (id: string, userId: string): Promise<void> => {
 
         const isCarValid = await prisma.car.findFirst({ where: { id } });
 
         if (!isCarValid) {
             throw new AppError(404, "Car not found.");
+        }
+
+        if(isCarValid.userId != userId) {
+            throw new AppError(403, "User must be the car owner");
         }
 
         await prisma.car.delete({ where: { id }});

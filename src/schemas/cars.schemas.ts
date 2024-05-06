@@ -6,10 +6,11 @@ export const carsSchema = z.object({
     description: z.string().nullish(),
     brand: z.string(),
     year: z.number().positive(),
-    km: z.number().positive()
+    km: z.number().positive(),
+    userId: z.string()
 });
 
-export const createCarsBodySchema = carsSchema.omit({ id: true });
+export const createCarsBodySchema = carsSchema.omit({ id: true, userId: true });
 
 export const updateCarsBodySchema = carsSchema.omit({ id: true }).partial();
 

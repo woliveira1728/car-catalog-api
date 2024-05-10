@@ -1,0 +1,128 @@
+paths:
+  /cars:
+    post:
+      security:
+        - JWTAuth: []
+      tags:
+        - Cars
+      summary: User creating and adding a car to the catalog
+      description: Create and return the car
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cars"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cars"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/TokenRequired"
+    get:
+      security:
+        - JWTAuth: []
+      tags:
+        - Cars
+      summary: List cars
+      description: Returns all cars belonging to the logged in user.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cars"
+        401:
+          $ref: "#/components/responses/TokenRequired"
+  /cars/{carId}:
+    get:
+      security:
+        - JWTAuth: []
+      tags:
+        - Cars
+      summary: Search car
+      description: Searching a car by id
+      parameters:
+        - name: carId
+          in: path
+          description: Car id for searching
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cars"
+        401:
+          $ref: "#/components/responses/TokenRequired"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        404:
+          $ref: "#/components/responses/NotFound"
+    patch:
+      security:
+        - JWTAuth: []
+      tags:
+        - Cars
+      summary: Update a car
+      description: Updating a car by id
+      parameters:
+        - name: carId
+          in: path
+          description: Car id for updating
+          required: true
+          schema:
+            type: string
+      requestBody:
+        optional: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cars"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cars"
+        401:
+          $ref: "#/components/responses/TokenRequired"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        404:
+          $ref: "#/components/responses/NotFound"
+    delete:
+      security:
+        - JWTAuth: []
+      tags:
+        - Cars
+      summary: Delete car
+      description: Deleting a car by id
+      parameters:
+        - name: carId
+          in: path
+          description: Car id for deleting
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: "#/components/responses/TokenRequired"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        404:
+          $ref: "#/components/responses/NotFound"

@@ -1,15 +1,20 @@
-import { prisma } from "../../database/prisma";
-import { createCarMock, updateCarBodyErrorMock, updateCarMock } from "../__mocks__/cars.mocks";
-import { request } from "../utils/request";
+import "reflect-metadata";
+import { carsCreateBodyListMock, updateCarBodyErrorMock, updateCarMock } from "../__mocks__/";
+import { request, updateTaskBeforeEach } from "../utils/";
+import { CarsServices } from "../../services/";
 
+const carsService = new CarsServices;
 
 describe("Integration test: update cars", () => {
     test("Should be able to update car successfully", async () => {
         
-        const car = await prisma.car.create({ data: createCarMock });
+        const { user, token } = await updateTaskBeforeEach();
+        
+        const car = await carsService.createCar(carsCreateBodyListMock[0], user.id);
 
         const data = await request
             .patch(`/cars/${car.id}`)
+            .set("Authorization", `Bearer ${token}`)
             .send(updateCarMock)
             .expect(200)
             .then((response) => response.body);
@@ -21,7 +26,10 @@ describe("Integration test: update cars", () => {
 
     test("Should throw error when car is invalid", async () => {
 
+        const { token } = await updateTaskBeforeEach();
+
         const data = await request.patch("/cars/f9896743-ab54-b969-4a5d-32a2c360aaab")
+            .set("Authorization", `Bearer ${token}`)
             .expect(404)
             .then(response => response.body);
         
@@ -31,9 +39,13 @@ describe("Integration test: update cars", () => {
 
     test("Should throw error when body is invalid", async () => {
 
-        const car = await prisma.car.create({ data: createCarMock });
+        const { user, token } = await updateTaskBeforeEach();
+        
+        const car = await carsService.getManyCars(user.id);
 
-        await request.patch(`/cars/${car.id}`).send(updateCarBodyErrorMock).expect(400)
+        await request.patch(`/cars/${car[0].id}`)
+            .set("Authorization", `Bearer ${token}`)
+            .send(updateCarBodyErrorMock).expect(400)
 
     });
 });

@@ -4,12 +4,13 @@ export const carsSchema = z.object({
     id: z.string(),
     name: z.string().min(1),
     description: z.string().nullish(),
-    brand: z.string(),
+    brand: z.string().min(1),
     year: z.number().positive(),
-    km: z.number().positive()
+    km: z.number().positive(),
+    userId: z.string()
 });
 
-export const createCarsBodySchema = carsSchema.omit({ id: true });
+export const createCarsBodySchema = carsSchema.omit({ id: true, userId: true });
 
 export const updateCarsBodySchema = carsSchema.omit({ id: true }).partial();
 

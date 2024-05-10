@@ -1,0 +1,34 @@
+components:
+  schemas:
+    Cars:
+      type: object
+      required:
+        - name
+        - brand
+        - year
+        - km
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: 227af912-87f0-4cbd-ab6a-d9120e2c2a6b
+        name:
+          type: string
+          example: Opala Comodoro
+        description:
+          type: string
+          nullable: true
+          example: Pure luxury model with excellent finishes details on the panel imitating rosewood, vinyl roof, radio, power steering were some of the items that equip the 'Opalão'
+        brand:
+          type: string
+          example: Chevrolet
+        year:
+          type: integer
+          example: 1968
+        km:
+          type: integer
+          example: 5000000
+        userId:
+          type: string
+          readOnly: true
+          example: 0c3c907d-44c2-470b-b9fc-2e56da233c5f

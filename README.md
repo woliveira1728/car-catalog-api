@@ -1,53 +1,53 @@
 # Car Catalog API
 
-## Requisitos
+## Requirements
 
 - [Node.js](https://nodejs.org/en/download)
 - [PostgreSQL](https://www.postgresql.org/download)
 
-### Clonando o projeto
-Executar no terminal:
+### Cloning the project
+Run in terminal:
 
 ```bash
 git clone git@github.com:woliveira1728/car-catalog-api.git
 ```
 
-### Instalando Dependências
-Instalar as dependências de desenvolvimento e produção
+### Installing Dependencies
+Install development and production dependencies
 ```bash
 cd car-catalog-api
 npm install
 ```
-### Variáveis de Ambiente
-Duplicar o arquivo `.env.example` e renomear a cópia para `.env`, sobrescrevendo os valores das variáveis de ambiente do arquivo `.env` com as suas credeniais.
+### Environment variables
+Duplicate the `.env.example` file and rename the copy to `.env`, overwriting the values ​​of the environment variables in the `.env` file with your credentials.
 
-O projeto utiliza as seguintes variáveis de ambinete:
+The project uses the following environment variables:
 
 | Var Name | Description | Required |
 |----------|-------------|----------|
-| DATABASE_URL | Credenciais do banco de dados utilizado| obrigatório |
-| JWT_SECRET_KEY | Chave secreta utilizada pela autenticação JWT | obrigatório |
-| EXPIRES_IN | Tempo de expiração do Token JWT (1ms, 1m, 1h, 1d...) | obrigatório |
+| DATABASE_URL | Database credentials used | required |
+| JWT_SECRET_KEY | Secret key used by JWT authentication | required |
+| EXPIRES_IN | JWT Token Expiration Time (1ms, 1m, 1h, 1d...) | optional |
 
-### Executando as migrações
+### Running the migrations
 
-Execute o comando abaixo na raiz do projeto:
+Run the command below in the project root:
 
 ```bash
 npx prisma migrate dev
 ```
 
-### Inicializando o Servidor
-O servidor da API será executado, por padrão, na porta 3000:
+### Starting the Server
+The API server will run by default on port 3000:
 
 ```bash
 npm run dev
 ```
 
-Navege até http://localhost:3000 para acessar a API.
+Navigate to http://localhost:3000 to access the API.
 
-## Rotas
+## Routes
 
-- Acesse a documentação das rotas em http://localhost:3000/docs.
+- Access route documentation at http://localhost:3000/docs.
 
-- Baixe a documentação Swagger utilizando a rota http://localhost:3000/docs.json.
+- Download the Swagger documentation using the route http://localhost:3000/docs.json.

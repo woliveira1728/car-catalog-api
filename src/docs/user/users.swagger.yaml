@@ -1,0 +1,68 @@
+paths:
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Creating a user
+      description: Create a new user to the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Users"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersCreateReturn"
+        409:
+          $ref: "#/components/responses/EmailAlready"
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /users/login:
+    post:
+      tags:
+        - Users
+      summary: Logging in a user
+      description: Logging into the application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginReturn"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/LoginNotMatch"
+        404:
+          $ref: "#/components/responses/NotFound"
+  /users/profile:
+    get:
+      security:
+        - JWTAuth: []
+      tags:
+        - Users
+      summary: Get a user profile
+      description: Getting a credentials user profile
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileReturn"
+        401:
+          $ref: "#/components/responses/TokenRequired"
+
+      

@@ -31,7 +31,11 @@ export class UsersServices {
             throw new AppError(401, "E-mail and password doesn't match");
         }
 
-        const token = jwt.sign( { id: user.id }, process.env.JWT_SECRET! );
+        const token = jwt.sign(
+            { id: user.id },
+            process.env.JWT_SECRET!,
+            { expiresIn: process.env.EXPIRES_IN || "1h" }
+        );
 
         return {
             accessToken: token,
